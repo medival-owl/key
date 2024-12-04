@@ -1,0 +1,161 @@
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+;矢印キー系
+F13 & J::Send,{Blind}{Left}
+F13 & K::Send,{Blind}{Down}
+F13 & I::Send,{Blind}{Up}
+F13 & L::Send,{Blind}{Right}
+
+
+;チルトホイール
+F24:: Send, {WheelRight}
+F23::Send, {WheelLeft}
+
+F13 & +::Send,{Blind}{END}
+F13 & Enter::Send,{Blind}{END}
+F13 & H::Send,{Blind}{HOME}
+
+;変換処理系
+F13 & U::Send,{Blind}{F7}
+F13 & O::Send,{Blind}{F10}
+
+
+
+;ドラッグ系
+F13 & M::Send,{Blind}+{END}
+F13 & N::Send,{Blind}+{HOME}
+
+
+F13 & F::Send,{Blind}^{Right}
+F13 & D::Send,{Blind}^{Left}
+F13 & V::Send,{Blind}^+{Right}
+F13 & C::Send,{Blind}^+{Left}
+F13 & B::^a
+
+;一行丸々ドラッグして下の行へ
+F13 & G::Send,{Blind}+{Home}+{Down}
+
+
+F13 & A::AltTab
+F13 & S::^s
+;F13 & Space::Alt;他のctlr右とかと混ざるので使えない
+F13 & .::+Right
+F13 & ,::+Left
+
+;コピペ系
+
+F13 & Q::^z
+F13 & W::^c
+F13 & E::^x
+F13 & R::^v
+F13 & T::#v
+
+F13 & Tab::+Tab
+
+;音声入力
+F13 & Z::#h
+Return
+
+;今コピーされているものをedgeで検索
+;////////////////////////////////////////////////
+F13 & P::
+Send,^c
+Process,Exist,msedge.exe             
+if(ErrorLevel<>0){              
+ WinActivate,ahk_pid %ErrorLevel%
+ Sleep, 100
+ Send,^t
+ Send,^l
+ Send,^v
+ Send,{Enter}
+ Return    
+}
+Return
+
+;コピーして
+F14::
+Send,^c
+Process,Exist,msedge.exe             
+if(ErrorLevel<>0){              
+ WinActivate,ahk_pid %ErrorLevel%
+ Sleep, 100
+ Send,^t
+ Send,^l
+ Send,^v
+ Send,{Enter}
+ Return    
+}
+Return       
+
+;//////////////////////////////////////////////
+F13 & 6::
+Send,^c
+Process,Exist,msedge.exe             
+if(ErrorLevel<>0){              
+ WinActivate,ahk_pid %ErrorLevel%
+
+ Return    
+}
+Return
+
+
+F13 & 7::
+Send,^c
+Process,Exist,ApplicationFrameHost.exe
+if(ErrorLevel<>0){              
+ WinActivate,ahk_pid %ErrorLevel%
+
+ Return    
+}
+Return
+
+
+
+
+;//////////////////////////////////////////////
+
+;今コピーされているものをchromeで和訳検索 なんか色々壊れて全く機能しない
+F13 & @::Send,^c
+
+Process,Exist,msedge.exe  
+if ErrorLevel<>0;機能していない
+{             
+	;なんかedgeが開いてない時はクロームを開いて検索するバグ
+	WinActivate,ahk_pid %ErrorLevel%;
+	Sleep, 100
+	;新しい画面を開く
+	Send,^t
+	;altとshiftとBキーでお気に入り欄に飛ぶ
+	Send,+!B
+	Send,{Right}
+	Sleep, 100
+	Send,{Blind}{Right}
+	
+	Sleep, 100
+	Send,{Blind}{Enter}
+	
+	Sleep,2000
+	Send,{Blind}^{v}
+	Send,{Blind}{Enter}
+	Return
+}
+else
+{
+	Return
+}
+Return
+
+;今コピーされているものの頭にPythoeとつけてchromeで検索
+F13 & 0::
+WinActivate,ahk_exe chrome.exe
+Sleep, 100
+Send,^t
+Send,^l
+Send,"Python" 
+Sleep, 200
+;Send,{Enter,2}
+Return
+

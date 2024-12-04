@@ -1,0 +1,113 @@
+#NoEnv  ; 推奨設定
+SendMode Input  ; 高速で信頼性の高いモード
+SetWorkingDir %A_ScriptDir%  ; 一貫した作業ディレクトリを設定
+
+; 矢印キー系
+F13 & J::Send, {Blind}{Left}
+F13 & K::Send, {Blind}{Down}
+F13 & I::Send, {Blind}{Up}
+F13 & L::Send, {Blind}{Right}
+
+; チルトホイール
+F24::Send, {WheelRight}
+F23::Send, {WheelLeft}
+
+; END、HOME関連
+F13 & +::Send, {Blind}{END}
+F13 & Enter::Send, {Blind}{END}
+F13 & H::Send, {Blind}{HOME}
+
+; 変換処理系
+F13 & U::Send, {Blind}{F7}
+F13 & O::Send, {Blind}{F10}
+
+; ドラッグ操作
+F13 & M::Send, {Blind}+{END}
+F13 & N::Send, {Blind}+{HOME}
+F13 & F::Send, {Blind}^{Right}
+F13 & D::Send, {Blind}^{Left}
+F13 & V::Send, {Blind}^+{Right}
+F13 & C::Send, {Blind}^+{Left}
+F13 & B::Send, ^a
+F13 & G::Send, {Blind}+{Home}+{Down}
+
+; アプリ操作
+F13 & A::AltTab
+F13 & S::Send, ^s
+F13 & .::Send, +Right
+F13 & ,::Send, +Left
+
+; コピペ関連
+F13 & Q::Send, ^z
+F13 & W::Send, ^c
+F13 & E::Send, ^x
+F13 & R::Send, ^v
+F13 & T::Send, #v
+F13 & Tab::Send, +Tab
+
+; 音声入力
+F13 & Z::Send, #h
+
+; コピー内容をEdgeで検索
+F13 & P::
+    Send, ^c
+    ClipWait, 1  ; コピー完了を待つ
+    if (ErrorLevel) {
+        MsgBox, コピーに失敗しました。
+        return
+    }
+    if WinExist("ahk_exe msedge.exe") {
+        WinActivate, ahk_exe msedge.exe
+        Sleep, 100
+        Send, ^t^l^v{Enter}
+    }
+return
+
+; コピー内容をEdgeで検索（F14版）
+F14::
+    Send, ^c
+    ClipWait, 1
+    if (ErrorLevel) {
+        MsgBox, コピーに失敗しました。
+        return
+    }
+    if WinExist("ahk_exe msedge.exe") {
+        WinActivate, ahk_exe msedge.exe
+        Sleep, 100
+        Send, ^t^l^v{Enter}
+    }
+return
+
+; アプリケーション切り替え
+F13 & 6::
+    Send, ^c
+    ClipWait, 1
+    if WinExist("ahk_exe msedge.exe") {
+        WinActivate, ahk_exe msedge.exe
+    }
+return
+
+F13 & 7::
+    Send, ^c
+    ClipWait, 1
+    if WinExist("ahk_exe ApplicationFrameHost.exe") {
+        WinActivate, ahk_exe ApplicationFrameHost.exe
+    }
+return
+
+; コピー内容をPythonプレフィックス付きでChrome検索
+F13 & 0::
+    Send, ^c
+    ClipWait, 1
+    if (ErrorLevel) {
+        MsgBox, コピーに失敗しました。
+        return
+    }
+    if WinExist("ahk_exe chrome.exe") {
+        WinActivate, ahk_exe chrome.exe
+        Sleep, 100
+        Send, ^t^l
+        Send, "Python "
+        Send, ^v{Enter}
+    }
+return
